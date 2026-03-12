@@ -2,7 +2,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'npm:@supabase/supabase-js@2.49.1';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!;
-const FROM_EMAIL = 'Builty <noreply@builty.fr>';
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'Builty <onboarding@resend.dev>';
 const APP_URL = Deno.env.get('APP_URL') ?? 'https://app.builty.fr';
 
 const supabase = createClient(
