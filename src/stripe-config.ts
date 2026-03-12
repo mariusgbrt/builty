@@ -16,11 +16,11 @@ export interface StripeProduct {
 
 export const stripeProducts: StripeProduct[] = [
   {
-    id: 'prod_TZcrjzG2gcnqze', // ⚠️ REMPLACEZ par votre vrai Product ID Stripe
-    priceId: 'price_1ScTbm9X5XfpDIWavtNRbBKP', // ⚠️ REMPLACEZ par votre vrai Price ID Stripe
+    id: 'prod_TZcrjzG2gcnqze',
+    priceId: 'price_1ScTbm9X5XfpDIWavtNRbBKP',
     name: 'Builty PRO',
     description: 'Abonnement mensuel à Builty PRO',
-    price: 169.00, // ✅ Prix mis à jour
+    price: 169.00,
     currency: 'eur',
     mode: 'subscription',
     limits: {
@@ -29,16 +29,29 @@ export const stripeProducts: StripeProduct[] = [
     }
   },
   {
-    id: 'prod_TZcqjaLY5GovpE', // ⚠️ REMPLACEZ par votre vrai Product ID Stripe
-    priceId: 'price_1ScTbG9X5XfpDIWaeUCAYwYP', // ⚠️ REMPLACEZ par votre vrai Price ID Stripe
+    id: 'prod_TZcqjaLY5GovpE',
+    priceId: 'price_1ScTbG9X5XfpDIWaeUCAYwYP',
     name: 'Builty REGULAR',
     description: 'Abonnement mensuel à Builty REGULAR',
-    price: 89.00, // ✅ Prix mis à jour
+    price: 89.00,
     currency: 'eur',
     mode: 'subscription',
     limits: {
       employees: 8,
       activeProjects: 5
+    }
+  },
+  {
+    id: 'prod_SOLO',
+    priceId: 'price_1T12Ty9X5XfpDIWaL9UjKzJ6',
+    name: 'Builty SOLO',
+    description: 'Abonnement mensuel à Builty SOLO',
+    price: 49.00,
+    currency: 'eur',
+    mode: 'subscription',
+    limits: {
+      employees: 1,
+      activeProjects: 4
     }
   }
 ];
