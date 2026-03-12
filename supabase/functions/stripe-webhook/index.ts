@@ -25,8 +25,10 @@ function buildPriceMap(): Record<string, { name: string; interval: string }> {
   const entries = [
     { key: 'PRICE_ID_PRO',             name: 'Builty PRO',     interval: 'mensuel' },
     { key: 'PRICE_ID_REGULAR',         name: 'Builty REGULAR', interval: 'mensuel' },
+    { key: 'PRICE_ID_SOLO',            name: 'Builty SOLO',    interval: 'mensuel' },
     { key: 'PRICE_ID_PRO_YEARLY',      name: 'Builty PRO',     interval: 'annuel'  },
     { key: 'PRICE_ID_REGULAR_YEARLY',  name: 'Builty REGULAR', interval: 'annuel'  },
+    { key: 'PRICE_ID_SOLO_YEARLY',     name: 'Builty SOLO',    interval: 'annuel'  },
   ];
 
   for (const { key, name, interval } of entries) {
