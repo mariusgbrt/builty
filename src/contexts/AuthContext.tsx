@@ -120,6 +120,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .insert({
         company_id: companyData.id,
       });
+
+    // Send welcome email (non-blocking)
+    if (authData.session) {
+      supabase.functions
+        .invoke('send-email', {
+          body: { type: 'welcome' },
+          headers: { Authorization: `Bearer ${authData.session.access_token}` },
+        })
+        .catch((err) => console.warn('Welcome email failed:', err));
+    }
   };
 
   const signOut = async () => {
