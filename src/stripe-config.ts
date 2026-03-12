@@ -17,7 +17,7 @@ export interface StripeProduct {
 export const stripeProducts: StripeProduct[] = [
   {
     id: 'prod_TZcrjzG2gcnqze',
-    priceId: 'price_1ScTbm9X5XfpDIWavtNRbBKP',
+    priceId: 'price_1T7ZEw9X5XfpDIWajvxSoaWs',
     name: 'Builty PRO',
     description: 'Abonnement mensuel à Builty PRO',
     price: 169.00,
@@ -30,7 +30,7 @@ export const stripeProducts: StripeProduct[] = [
   },
   {
     id: 'prod_TZcqjaLY5GovpE',
-    priceId: 'price_1ScTbG9X5XfpDIWaeUCAYwYP',
+    priceId: 'price_1T7ZDM9X5XfpDIWay1dhT5Lj',
     name: 'Builty REGULAR',
     description: 'Abonnement mensuel à Builty REGULAR',
     price: 89.00,
