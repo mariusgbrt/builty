@@ -17,16 +17,31 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
 );
 
-// ─── Plan mapping ──────────────────────────────────────────────────────────────
+// ─── Plan mapping (lu depuis les secrets Supabase) ────────────────────────────
 
-const PRICE_TO_PLAN: Record<string, { name: string; price: string }> = {
-  price_1ScTbm9X5XfpDIWavtNRbBKP: { name: 'Builty PRO', price: '169 €/mois' },
-  price_1ScTbG9X5XfpDIWaeUCAYwYP: { name: 'Builty REGULAR', price: '89 €/mois' },
-};
+function buildPriceMap(): Record<string, { name: string; interval: string }> {
+  const map: Record<string, { name: string; interval: string }> = {};
+
+  const entries = [
+    { key: 'PRICE_ID_PRO',             name: 'Builty PRO',     interval: 'mensuel' },
+    { key: 'PRICE_ID_REGULAR',         name: 'Builty REGULAR', interval: 'mensuel' },
+    { key: 'PRICE_ID_PRO_YEARLY',      name: 'Builty PRO',     interval: 'annuel'  },
+    { key: 'PRICE_ID_REGULAR_YEARLY',  name: 'Builty REGULAR', interval: 'annuel'  },
+  ];
+
+  for (const { key, name, interval } of entries) {
+    const priceId = Deno.env.get(key);
+    if (priceId) map[priceId] = { name, interval };
+  }
+
+  return map;
+}
+
+const PRICE_TO_PLAN = buildPriceMap();
 
 function getPlanInfo(priceId: string | null | undefined) {
   if (priceId && PRICE_TO_PLAN[priceId]) return PRICE_TO_PLAN[priceId];
-  return { name: 'Builty', price: '' };
+  return { name: 'Builty', interval: '' };
 }
 
 // ─── Email helpers ─────────────────────────────────────────────────────────────
@@ -257,6 +272,7 @@ async function handleEvent(event: Stripe.Event) {
 
     const priceId = invoice.lines.data[0]?.price?.id;
     const plan = getPlanInfo(priceId);
+    const planLabel = plan.interval ? `${plan.name} (${plan.interval})` : plan.name;
     const amount = formatAmount(invoice.amount_paid, invoice.currency);
     const nextDate = invoice.lines.data[0]?.period?.end
       ? formatDate(invoice.lines.data[0].period.end)
@@ -264,8 +280,8 @@ async function handleEvent(event: Stripe.Event) {
 
     await sendEmail(
       email,
-      `Paiement confirmé – Abonnement ${plan.name} ✅`,
-      paymentSuccessTemplate(plan.name, amount, nextDate),
+      `Paiement confirmé – Abonnement ${planLabel} ✅`,
+      paymentSuccessTemplate(planLabel, amount, nextDate),
     );
 
     return;
@@ -285,12 +301,13 @@ async function handleEvent(event: Stripe.Event) {
 
     const priceId = subscription.items.data[0]?.price?.id;
     const plan = getPlanInfo(priceId);
+    const planLabel = plan.interval ? `${plan.name} (${plan.interval})` : plan.name;
     const endDate = subscription.ended_at ? formatDate(subscription.ended_at) : '';
 
     await sendEmail(
       email,
-      `Votre abonnement ${plan.name} a été résilié`,
-      subscriptionCancelledTemplate(plan.name, endDate),
+      `Votre abonnement ${planLabel} a été résilié`,
+      subscriptionCancelledTemplate(planLabel, endDate),
     );
 
     return;
@@ -308,12 +325,13 @@ async function handleEvent(event: Stripe.Event) {
 
     const priceId = invoice.lines.data[0]?.price?.id;
     const plan = getPlanInfo(priceId);
+    const planLabel = plan.interval ? `${plan.name} (${plan.interval})` : plan.name;
     const amount = formatAmount(invoice.amount_due, invoice.currency);
 
     await sendEmail(
       email,
       `⚠️ Échec de paiement – Action requise`,
-      paymentFailedTemplate(plan.name, amount),
+      paymentFailedTemplate(planLabel, amount),
     );
 
     return;
